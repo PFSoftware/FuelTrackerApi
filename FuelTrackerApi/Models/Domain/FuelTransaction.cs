@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FuelTrackerApi.Models.Domain
 {
@@ -6,21 +7,26 @@ namespace FuelTrackerApi.Models.Domain
     public class FuelTransaction
     {
         /// <summary>Transaction ID</summary>
+        [Key]
         public int TranscationID { get; set; }
 
         /// <summary>Vehicle ID</summary>
+        [Required]
         public int VehicleID { get; set; }
 
         /// <summary>Vehicle associated with the fuel transaction.</summary>
         public Vehicle Vehicle { get; set; }
 
         /// <summary>Store where fuel was purchased.</summary>
+        [Required]
         public string Store { get; set; }
 
         /// <summary>Date fuel was purchased.</summary>
+        [Required]
         public DateTime Date { get; set; }
 
         /// <summary>Octane of fuel purchased.</summary>
+        [Required]
         public int Octane { get; set; }
 
         /// <summary>Estimated range vehicle.</summary>
@@ -36,6 +42,7 @@ namespace FuelTrackerApi.Models.Domain
         public decimal Odometer { get; set; }
 
         /// <summary>Price of fuel per gallon.</summary>
+        [Required]
         public decimal Price { get; set; }
 
         #region Override Operators

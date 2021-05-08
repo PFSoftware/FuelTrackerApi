@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace FuelTrackerApi.Models.Domain
@@ -8,18 +9,23 @@ namespace FuelTrackerApi.Models.Domain
     public class Vehicle
     {
         /// <summary>Vehicle ID</summary>
+        [Key]
         public int VehicleID { get; set; }
 
         /// <summary>Vehicle nickname</summary>
+        [Required]
         public string Nickname { get; set; }
 
         /// <summary>Brand of Vehicle</summary>
+        [Required]
         public string Make { get; set; }
 
         /// <summary>Model of Vehicle</summary>
+        [Required]
         public string Model { get; set; }
 
         /// <summary>Model year of Vehicle</summary>
+        [Required]
         public int Year { get; set; }
 
         /// <summary>List of Transactions associated with the current Vehicle.</summary>
