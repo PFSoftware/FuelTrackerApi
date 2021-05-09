@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FuelTrackerApi.Data
 {
@@ -17,27 +16,38 @@ namespace FuelTrackerApi.Data
 
         public void AddVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            if (vehicle == null)
+                throw new ArgumentNullException(nameof(vehicle));
+
+            _vehicleContext.Vehicles.Add(vehicle);
         }
 
         public void DeleteVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            if (vehicle == null)
+                throw new ArgumentNullException(nameof(vehicle));
+
+            _vehicleContext.Vehicles.Remove(vehicle);
         }
 
         public IEnumerable<Vehicle> GetAllVehicles()
         {
-            throw new NotImplementedException();
+            return _vehicleContext.Vehicles.ToList();
         }
 
         public Vehicle GetVehicleById(int id)
         {
-            throw new NotImplementedException();
+            return _vehicleContext.Vehicles.FirstOrDefault(v => v.VehicleID == id);
         }
 
         public void ModifyVehicle(int id, Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            //Nothing
+        }
+
+        public bool SaveChanges()
+        {
+            return _vehicleContext.SaveChanges() >= 0;
         }
     }
 }

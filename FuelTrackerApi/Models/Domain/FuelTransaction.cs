@@ -8,7 +8,7 @@ namespace FuelTrackerApi.Models.Domain
     {
         /// <summary>Transaction ID</summary>
         [Key]
-        public int TranscationID { get; set; }
+        public int TransactionID { get; set; }
 
         /// <summary>Vehicle ID</summary>
         [Required]
@@ -51,7 +51,7 @@ namespace FuelTrackerApi.Models.Domain
         {
             if (left is null && right is null) return true;
             if (left is null ^ right is null) return false;
-            return DateTime.Equals(left.Date, right.Date) && string.Equals(left.Store, right.Store, StringComparison.OrdinalIgnoreCase) && left.TranscationID == right.TranscationID && left.VehicleID == right.VehicleID && left.Odometer == right.Odometer && left.Range == right.Range && left.Distance == right.Distance && left.Gallons == right.Gallons && left.Odometer == right.Odometer && left.Price == right.Price;
+            return DateTime.Equals(left.Date, right.Date) && string.Equals(left.Store, right.Store, StringComparison.OrdinalIgnoreCase) && left.TransactionID == right.TransactionID && left.VehicleID == right.VehicleID && left.Odometer == right.Odometer && left.Range == right.Range && left.Distance == right.Distance && left.Gallons == right.Gallons && left.Odometer == right.Odometer && left.Price == right.Price;
         }
 
         public override bool Equals(object obj) => Equals(this, obj as FuelTransaction);
