@@ -14,5 +14,7 @@ namespace FuelTrackerApi.Data
         void DeleteVehicle(Vehicle vehicle);
 
         void ModifyVehicle(int id, Vehicle vehicle);
+
+        bool SaveChanges();
     }
 }

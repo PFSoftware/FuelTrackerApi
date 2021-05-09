@@ -1,8 +1,10 @@
+using FuelTrackerApi.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace FuelTrackerApi
 {
@@ -23,6 +25,10 @@ namespace FuelTrackerApi
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "FuelTrackerApi", Version = "v1" });
             //});
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IVehicleData, MockVehicleData>();
+            services.AddScoped<IFuelTransactionData, MockFuelTransactionData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

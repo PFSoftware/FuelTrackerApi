@@ -14,5 +14,7 @@ namespace FuelTrackerApi.Data
         void DeleteFuelTransaction(FuelTransaction FuelTransaction);
 
         void ModifyFuelTransaction(int id, FuelTransaction FuelTransaction);
+
+        bool SaveChanges();
     }
 }
