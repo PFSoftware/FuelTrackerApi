@@ -14,9 +14,10 @@ namespace FuelTrackerApi.Controllers
         private readonly IVehicleData _repository;
         private readonly IMapper _mapper;
 
-        public VehiclesController(IVehicleData repository)
+        public VehiclesController(IVehicleData repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         //GET api/Vehicles

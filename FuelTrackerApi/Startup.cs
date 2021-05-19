@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Text.Json.Serialization;
 
 namespace FuelTrackerApi
 {
@@ -29,6 +30,10 @@ namespace FuelTrackerApi
 
             services.AddScoped<IVehicleData, MockVehicleData>();
             services.AddScoped<IFuelTransactionData, MockFuelTransactionData>();
+            services.AddMvc().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
