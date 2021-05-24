@@ -30,12 +30,8 @@ namespace FuelTrackerApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<VehicleContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
-            services.AddScoped<IVehicleData, MockVehicleData>();
-            services.AddScoped<IFuelTransactionData, MockFuelTransactionData>();
-            services.AddMvc().AddJsonOptions(o =>
-            {
-                o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            });
+            services.AddScoped<IVehicleData, SqlVehicleData>();
+            services.AddScoped<IFuelTransactionData, SqlFuelTransactionData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
