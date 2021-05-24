@@ -52,7 +52,7 @@ namespace FuelTrackerApi.Controllers
 
             var VehicleViewModel = _mapper.Map<VehicleViewModel>(vehicleModel);
 
-            return CreatedAtRoute(nameof(GetVehicleById), new { Id = VehicleViewModel.VehicleId }, VehicleViewModel);
+            return CreatedAtRoute(nameof(GetVehicleById), new { Id = VehicleViewModel.Id }, VehicleViewModel);
         }
 
         //PUT api/Vehicles/{id}
