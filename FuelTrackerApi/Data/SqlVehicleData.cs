@@ -14,7 +14,7 @@ namespace FuelTrackerApi.Data
             _vehicleContext = vehicleContext;
         }
 
-        public void AddVehicle(Vehicle vehicle)
+        public void CreateVehicle(Vehicle vehicle)
         {
             if (vehicle == null)
                 throw new ArgumentNullException(nameof(vehicle));
@@ -40,7 +40,7 @@ namespace FuelTrackerApi.Data
             return _vehicleContext.Vehicles.FirstOrDefault(v => v.VehicleID == id);
         }
 
-        public void ModifyVehicle(int id, Vehicle vehicle)
+        public void UpdateVehicle(int id, Vehicle vehicle)
         {
             //Nothing
         }

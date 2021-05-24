@@ -9,11 +9,11 @@ namespace FuelTrackerApi.Data
 
         Vehicle GetVehicleById(int id);
 
-        void AddVehicle(Vehicle vehicle);
+        void CreateVehicle(Vehicle vehicle);
 
         void DeleteVehicle(Vehicle vehicle);
 
-        void ModifyVehicle(int id, Vehicle vehicle);
+        void UpdateVehicle(int id, Vehicle vehicle);
 
         bool SaveChanges();
     }

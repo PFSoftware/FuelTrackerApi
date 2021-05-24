@@ -9,11 +9,11 @@ namespace FuelTrackerApi.Data
 
         FuelTransaction GetFuelTransactionById(int id);
 
-        void AddFuelTransaction(FuelTransaction FuelTransaction);
+        void CreateFuelTransaction(FuelTransaction FuelTransaction);
 
         void DeleteFuelTransaction(FuelTransaction FuelTransaction);
 
-        void ModifyFuelTransaction(int id, FuelTransaction FuelTransaction);
+        void UpdateFuelTransaction(int id, FuelTransaction FuelTransaction);
 
         bool SaveChanges();
     }

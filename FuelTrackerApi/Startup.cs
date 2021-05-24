@@ -1,6 +1,7 @@
 using FuelTrackerApi.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,8 +29,9 @@ namespace FuelTrackerApi
             //});
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddScoped<IVehicleData, MockVehicleData>();
-            services.AddScoped<IFuelTransactionData, MockFuelTransactionData>();
+            services.AddDbContext<VehicleContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
+            services.AddScoped<IVehicleData, SqlVehicleData>();
+            services.AddScoped<IFuelTransactionData, SqlFuelTransactionData>();
             services.AddMvc().AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;

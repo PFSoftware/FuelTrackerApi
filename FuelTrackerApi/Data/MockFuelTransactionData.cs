@@ -13,7 +13,17 @@ namespace FuelTrackerApi.Data
         //    _fuelTransactionContext = fuelTransactionContext;
         //}
 
-        public void AddFuelTransaction(FuelTransaction FuelTransaction)
+        private Vehicle newVehicle = new Vehicle
+        {
+            VehicleID = 1,
+            Nickname = "Corolla",
+            Make = "Toyota",
+            Model = "Corolla",
+            Year = 2017,
+            Transactions = new List<FuelTransaction>()
+        };
+
+        public void CreateFuelTransaction(FuelTransaction FuelTransaction)
         {
             if (FuelTransaction == null)
                 throw new ArgumentNullException(nameof(FuelTransaction));
@@ -33,9 +43,9 @@ namespace FuelTrackerApi.Data
         {
             DateTime.TryParse("2021-05-10", out DateTime date);
             return new List<FuelTransaction> {
-            new FuelTransaction{TransactionID = 1,
-                VehicleID = 1,
-                Vehicle = new Vehicle(),
+            new FuelTransaction{TransactionId = 1,
+                VehicleId = 1,
+                Vehicle = newVehicle,
                 Store = "Murphy USA",
                 Date = date,
                 Octane = 87,
@@ -54,9 +64,9 @@ namespace FuelTrackerApi.Data
             DateTime.TryParse("2021-05-10", out DateTime date);
             return new FuelTransaction
             {
-                TransactionID = 1,
-                VehicleID = 1,
-                Vehicle = new Vehicle(),
+                TransactionId = 1,
+                VehicleId = 1,
+                Vehicle = newVehicle,
                 Store = "Murphy USA",
                 Date = date,
                 Octane = 87,
@@ -69,7 +79,7 @@ namespace FuelTrackerApi.Data
             //return _fuelTransactionContext.FuelTransactions.FirstOrDefault(v => v.TransactionID == id);
         }
 
-        public void ModifyFuelTransaction(int id, FuelTransaction FuelTransaction)
+        public void UpdateFuelTransaction(int id, FuelTransaction FuelTransaction)
         {
             //Nothing
         }

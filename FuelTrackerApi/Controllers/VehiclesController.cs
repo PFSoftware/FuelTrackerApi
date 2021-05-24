@@ -2,6 +2,7 @@
 using FuelTrackerApi.Data;
 using FuelTrackerApi.Models.Domain;
 using FuelTrackerApi.Models.ViewModels;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -24,9 +25,9 @@ namespace FuelTrackerApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<VehicleViewModel>> GetAllCommmands()
         {
-            IEnumerable<Vehicle> VehicleItems = _repository.GetAllVehicles();
+            IEnumerable<Vehicle> vehicleItems = _repository.GetAllVehicles();
 
-            return Ok(_mapper.Map<IEnumerable<VehicleViewModel>>(VehicleItems));
+            return Ok(_mapper.Map<IEnumerable<VehicleViewModel>>(vehicleItems));
         }
 
         //GET api/Vehicles/{id}
@@ -41,74 +42,74 @@ namespace FuelTrackerApi.Controllers
             return NotFound();
         }
 
-        ////POST api/Vehicles
-        //[HttpPost]
-        //public ActionResult<VehicleViewModel> CreateVehicle(VehicleCreateDto VehicleCreateDto)
-        //{
-        //    var VehicleModel = _mapper.Map<Vehicle>(VehicleCreateDto);
-        //    _repository.CreateVehicle(VehicleModel);
-        //    _repository.SaveChanges();
+        //POST api/Vehicles
+        [HttpPost]
+        public ActionResult<VehicleViewModel> CreateVehicle(Vehicle vehicle)
+        {
+            Vehicle vehicleModel = _mapper.Map<Vehicle>(vehicle);
+            _repository.CreateVehicle(vehicleModel);
+            _repository.SaveChanges();
 
-        //    var VehicleViewModel = _mapper.Map<VehicleViewModel>(VehicleModel);
+            var VehicleViewModel = _mapper.Map<VehicleViewModel>(vehicleModel);
 
-        //    return CreatedAtRoute(nameof(GetVehicleById), new { Id = VehicleViewModel.Id }, VehicleViewModel);
-        //}
+            return CreatedAtRoute(nameof(GetVehicleById), new { Id = VehicleViewModel.VehicleId }, VehicleViewModel);
+        }
 
-        ////PUT api/Vehicles/{id}
-        //[HttpPut("{id}")]
-        //public ActionResult UpdateVehicle(int id, VehicleUpdateDto VehicleUpdateDto)
-        //{
-        //    var VehicleModelFromRepo = _repository.GetVehicleById(id);
-        //    if (VehicleModelFromRepo == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    _mapper.Map(VehicleUpdateDto, VehicleModelFromRepo);
+        //PUT api/Vehicles/{id}
+        [HttpPut("{id}")]
+        public ActionResult UpdateVehicle(int id, Vehicle vehicle)
+        {
+            Vehicle vehicleModelFromRepo = _repository.GetVehicleById(id);
+            if (vehicleModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(vehicle, vehicleModelFromRepo);
 
-        //    _repository.UpdateVehicle(VehicleModelFromRepo);
+            _repository.UpdateVehicle(id, vehicleModelFromRepo);
 
-        //    _repository.SaveChanges();
+            _repository.SaveChanges();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
-        ////PATCH api/Vehicles/{id}
-        //[HttpPatch("{id}")]
-        //public ActionResult PartialVehicleUpdate(int id, JsonPatchDocument<VehicleUpdateDto> patchDoc)
-        //{
-        //    var VehicleModelFromRepo = _repository.GetVehicleById(id);
-        //    if (VehicleModelFromRepo == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //PATCH api/Vehicles/{id}
+        [HttpPatch("{id}")]
+        public ActionResult PartialVehicleUpdate(int id, JsonPatchDocument<Vehicle> patchDoc)
+        {
+            var vehicleModelFromRepo = _repository.GetVehicleById(id);
+            if (vehicleModelFromRepo == null)
+            {
+                return NotFound();
+            }
 
-        //    var VehicleToPatch = _mapper.Map<VehicleUpdateDto>(VehicleModelFromRepo);
-        //    patchDoc.ApplyTo(VehicleToPatch, ModelState);
+            var VehicleToPatch = _mapper.Map<Vehicle>(vehicleModelFromRepo);
+            patchDoc.ApplyTo(VehicleToPatch, ModelState);
 
-        //    if (!TryValidateModel(VehicleToPatch))
-        //    {
-        //        return ValidationProblem(ModelState);
-        //    }
+            if (!TryValidateModel(VehicleToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
 
-        //    _mapper.Map(VehicleToPatch, VehicleModelFromRepo);
+            _mapper.Map(VehicleToPatch, vehicleModelFromRepo);
 
-        //    _repository.UpdateVehicle(VehicleModelFromRepo);
+            _repository.UpdateVehicle(id, vehicleModelFromRepo);
 
-        //    _repository.SaveChanges();
+            _repository.SaveChanges();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
         //DELETE api/Vehicles/{id}
         [HttpDelete("{id}")]
         public ActionResult DeleteVehicle(int id)
         {
-            var VehicleModelFromRepo = _repository.GetVehicleById(id);
-            if (VehicleModelFromRepo == null)
+            var vehicleModelFromRepo = _repository.GetVehicleById(id);
+            if (vehicleModelFromRepo == null)
             {
                 return NotFound();
             }
-            _repository.DeleteVehicle(VehicleModelFromRepo);
+            _repository.DeleteVehicle(vehicleModelFromRepo);
             _repository.SaveChanges();
 
             return NoContent();

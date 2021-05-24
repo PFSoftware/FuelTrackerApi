@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FuelTrackerApi.Models.Domain
 {
@@ -8,13 +9,18 @@ namespace FuelTrackerApi.Models.Domain
     {
         /// <summary>Transaction ID</summary>
         [Key]
-        public int TransactionID { get; set; }
+        public int TransactionId { get; set; }
+
+        //TODO Figure out how to get this to work the way Doug says it should.
 
         /// <summary>Vehicle ID</summary>
         [Required]
-        public int VehicleID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int VehicleId { get; set; }
 
         /// <summary>Vehicle associated with the fuel transaction.</summary>
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Vehicle Vehicle { get; set; }
 
         /// <summary>Store where fuel was purchased.</summary>
@@ -33,16 +39,20 @@ namespace FuelTrackerApi.Models.Domain
         public int Range { get; set; }
 
         /// <summary>Distance travelled.</summary>
+        [Column(TypeName = "decimal(10,3)")]
         public decimal Distance { get; set; }
 
         /// <summary>Gallons purchased.</summary>
+        [Column(TypeName = "decimal(6,3)")]
         public decimal Gallons { get; set; }
 
         /// <summary>Odometer at fuel-up.</summary>
+        [Column(TypeName = "decimal(7,1)")]
         public decimal Odometer { get; set; }
 
         /// <summary>Price of fuel per gallon.</summary>
         [Required]
+        [Column(TypeName = "decimal(5,3)")]
         public decimal Price { get; set; }
 
         #region Override Operators
@@ -51,7 +61,7 @@ namespace FuelTrackerApi.Models.Domain
         {
             if (left is null && right is null) return true;
             if (left is null ^ right is null) return false;
-            return DateTime.Equals(left.Date, right.Date) && string.Equals(left.Store, right.Store, StringComparison.OrdinalIgnoreCase) && left.TransactionID == right.TransactionID && left.VehicleID == right.VehicleID && left.Odometer == right.Odometer && left.Range == right.Range && left.Distance == right.Distance && left.Gallons == right.Gallons && left.Odometer == right.Odometer && left.Price == right.Price;
+            return DateTime.Equals(left.Date, right.Date) && string.Equals(left.Store, right.Store, StringComparison.OrdinalIgnoreCase) && left.TransactionId == right.TransactionId && left.VehicleId == right.VehicleId && left.Odometer == right.Odometer && left.Range == right.Range && left.Distance == right.Distance && left.Gallons == right.Gallons && left.Odometer == right.Odometer && left.Price == right.Price;
         }
 
         public override bool Equals(object obj) => Equals(this, obj as FuelTransaction);

@@ -13,7 +13,7 @@ namespace FuelTrackerApi.Data
         //    _vehicleContext = vehicleContext;
         //}
 
-        public void AddVehicle(Vehicle vehicle)
+        public void CreateVehicle(Vehicle vehicle)
         {
             if (vehicle == null)
                 throw new ArgumentNullException(nameof(vehicle));
@@ -44,8 +44,8 @@ namespace FuelTrackerApi.Data
             DateTime.TryParse("2021-05-10", out DateTime date);
             newVehicle.AddTransaction(new FuelTransaction
             {
-                TransactionID = 1,
-                VehicleID = 1,
+                TransactionId = 1,
+                VehicleId = 1,
                 Vehicle = newVehicle,
                 Store = "Murphy USA",
                 Date = date,
@@ -58,8 +58,8 @@ namespace FuelTrackerApi.Data
             });
             newVehicle.AddTransaction(new FuelTransaction
             {
-                TransactionID = 2,
-                VehicleID = 1,
+                TransactionId = 2,
+                VehicleId = 1,
                 Vehicle = newVehicle,
                 Store = "Murphy USA",
                 Date = date,
@@ -71,8 +71,8 @@ namespace FuelTrackerApi.Data
                 Price = 2.179m
             }); newVehicle.AddTransaction(new FuelTransaction
             {
-                TransactionID = 3,
-                VehicleID = 1,
+                TransactionId = 3,
+                VehicleId = 1,
                 Vehicle = newVehicle,
                 Store = "Murphy USA",
                 Date = date,
@@ -104,7 +104,7 @@ namespace FuelTrackerApi.Data
             //return _vehicleContext.Vehicles.FirstOrDefault(v => v.VehicleID == id);
         }
 
-        public void ModifyVehicle(int id, Vehicle vehicle)
+        public void UpdateVehicle(int id, Vehicle vehicle)
         {
             //Nothing
         }

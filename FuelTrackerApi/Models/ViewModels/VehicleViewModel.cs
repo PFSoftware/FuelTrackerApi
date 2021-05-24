@@ -7,7 +7,7 @@ namespace FuelTrackerApi.Models.ViewModels
     public class VehicleViewModel
     {
         /// <summary>Vehicle ID</summary>
-        public int VehicleID { get; set; }
+        public int VehicleId { get; set; }
 
         /// <summary>Vehicle nickname</summary>
         public string Nickname { get; set; }

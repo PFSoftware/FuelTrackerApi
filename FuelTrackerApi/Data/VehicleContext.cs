@@ -10,5 +10,7 @@ namespace FuelTrackerApi.Data
         }
 
         public DbSet<Vehicle> Vehicles { get; set; }
+
+        public DbSet<FuelTransaction> FuelTransactions { get; set; }
     }
 }

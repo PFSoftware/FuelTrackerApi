@@ -7,19 +7,19 @@ namespace FuelTrackerApi.Data
 {
     public class SqlFuelTransactionData : IFuelTransactionData
     {
-        private readonly FuelTransactionContext _FuelTransactionContext;
+        private readonly VehicleContext _vehicleContext;
 
-        public SqlFuelTransactionData(FuelTransactionContext FuelTransactionContext)
+        public SqlFuelTransactionData(VehicleContext FuelTransactionContext)
         {
-            _FuelTransactionContext = FuelTransactionContext;
+            _vehicleContext = FuelTransactionContext;
         }
 
-        public void AddFuelTransaction(FuelTransaction FuelTransaction)
+        public void CreateFuelTransaction(FuelTransaction FuelTransaction)
         {
             if (FuelTransaction == null)
                 throw new ArgumentNullException(nameof(FuelTransaction));
 
-            _FuelTransactionContext.FuelTransactions.Add(FuelTransaction);
+            _vehicleContext.FuelTransactions.Add(FuelTransaction);
         }
 
         public void DeleteFuelTransaction(FuelTransaction FuelTransaction)
@@ -27,27 +27,27 @@ namespace FuelTrackerApi.Data
             if (FuelTransaction == null)
                 throw new ArgumentNullException(nameof(FuelTransaction));
 
-            _FuelTransactionContext.FuelTransactions.Remove(FuelTransaction);
+            _vehicleContext.FuelTransactions.Remove(FuelTransaction);
         }
 
         public IEnumerable<FuelTransaction> GetAllFuelTransactions()
         {
-            return _FuelTransactionContext.FuelTransactions.ToList();
+            return _vehicleContext.FuelTransactions.ToList();
         }
 
         public FuelTransaction GetFuelTransactionById(int id)
         {
-            return _FuelTransactionContext.FuelTransactions.FirstOrDefault(v => v.TransactionID == id);
+            return _vehicleContext.FuelTransactions.FirstOrDefault(v => v.TransactionId == id);
         }
 
-        public void ModifyFuelTransaction(int id, FuelTransaction FuelTransaction)
+        public void UpdateFuelTransaction(int id, FuelTransaction FuelTransaction)
         {
             //Nothing
         }
 
         public bool SaveChanges()
         {
-            return _FuelTransactionContext.SaveChanges() >= 0;
+            return _vehicleContext.SaveChanges() >= 0;
         }
     }
 }
