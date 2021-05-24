@@ -7,9 +7,9 @@ namespace FuelTrackerApi.Data
 {
     public class SqlFuelTransactionData : IFuelTransactionData
     {
-        private readonly VehicleContext _vehicleContext;
+        private readonly AppDbContext _vehicleContext;
 
-        public SqlFuelTransactionData(VehicleContext FuelTransactionContext)
+        public SqlFuelTransactionData(AppDbContext FuelTransactionContext)
         {
             _vehicleContext = FuelTransactionContext;
         }

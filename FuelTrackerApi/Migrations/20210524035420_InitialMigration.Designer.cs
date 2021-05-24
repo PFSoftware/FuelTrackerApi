@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FuelTrackerApi.Migrations
 {
-    [DbContext(typeof(VehicleContext))]
+    [DbContext(typeof(Data.AppDbContext))]
     [Migration("20210524035420_InitialMigration")]
     partial class InitialMigration
     {

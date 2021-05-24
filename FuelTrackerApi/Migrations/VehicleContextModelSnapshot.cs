@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FuelTrackerApi.Migrations
 {
-    [DbContext(typeof(VehicleContext))]
+    [DbContext(typeof(Data.AppDbContext))]
     partial class VehicleContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
