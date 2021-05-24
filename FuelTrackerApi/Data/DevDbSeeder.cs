@@ -8,16 +8,15 @@ namespace FuelTrackerApi.Data
 {
     public class DevDbSeeder
     {
-        private readonly AppDbContext _context;
+        private AppDbContext _context;
 
-        public DevDbSeeder(AppDbContext context)
+        public DevDbSeeder() { }
+
+        public async Task SeedDatabase(AppDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
 
-        public async Task SeedDatabase()
-        {
-
+            await SeedVehicles();
         }
 
         private async Task SeedVehicles()
