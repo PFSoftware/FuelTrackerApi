@@ -10,7 +10,7 @@ namespace FuelTrackerApi.Models.Domain
     {
         /// <summary>Vehicle ID</summary>
         [Key]
-        public int VehicleID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>Vehicle nickname</summary>
         [Required]
@@ -48,7 +48,7 @@ namespace FuelTrackerApi.Models.Domain
         {
             if (left is null && right is null) return true;
             if (left is null ^ right is null) return false;
-            return left.VehicleID == right.VehicleID && string.Equals(left.Nickname, right.Nickname, StringComparison.OrdinalIgnoreCase) && string.Equals(left.Make, right.Make, StringComparison.OrdinalIgnoreCase) && string.Equals(left.Model, right.Model, StringComparison.OrdinalIgnoreCase) && left.Year == right.Year && left.Transactions.Count == right.Transactions.Count && !left.Transactions.Except(right.Transactions).Any();
+            return left.Id == right.Id && string.Equals(left.Nickname, right.Nickname, StringComparison.OrdinalIgnoreCase) && string.Equals(left.Make, right.Make, StringComparison.OrdinalIgnoreCase) && string.Equals(left.Model, right.Model, StringComparison.OrdinalIgnoreCase) && left.Year == right.Year && left.Transactions.Count == right.Transactions.Count && !left.Transactions.Except(right.Transactions).Any();
         }
 
         public override bool Equals(object obj) => Equals(this, obj as Vehicle);
@@ -61,6 +61,6 @@ namespace FuelTrackerApi.Models.Domain
 
         public override int GetHashCode() => base.GetHashCode() ^ 17;
 
-        public override string ToString() => $"{VehicleID} - {Nickname}";
+        public override string ToString() => $"{Id} - {Nickname}";
     }
 }

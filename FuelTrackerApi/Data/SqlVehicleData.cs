@@ -37,7 +37,7 @@ namespace FuelTrackerApi.Data
 
         public Vehicle GetVehicleById(int id)
         {
-            return _vehicleContext.Vehicles.FirstOrDefault(v => v.VehicleID == id);
+            return _vehicleContext.Vehicles.FirstOrDefault(v => v.Id == id);
         }
 
         public void UpdateVehicle(int id, Vehicle vehicle)

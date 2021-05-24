@@ -9,10 +9,8 @@ namespace FuelTrackerApi.Profiles
         public VehiclesProfile()
         {
             //Source -> Target
-            CreateMap<Vehicle, VehicleViewModel>();
-            CreateMap<VehicleViewModel, Vehicle>();
-            CreateMap<FuelTransaction, FuelTransactionViewModel>();
-            CreateMap<FuelTransactionViewModel, FuelTransaction>();
+            CreateMap<Vehicle, VehicleViewModel>().ReverseMap();
+            CreateMap<FuelTransaction, FuelTransactionViewModel>().ReverseMap();
         }
     }
 }

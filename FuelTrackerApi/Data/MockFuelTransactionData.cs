@@ -22,7 +22,7 @@ namespace FuelTrackerApi.Data
             DateTime.TryParse("2021-05-10", out DateTime date);
             Vehicle newVehicle = new Vehicle
             {
-                VehicleID = 1,
+                Id = 1,
                 Nickname = "Corolla",
                 Make = "Toyota",
                 Model = "Corolla",
@@ -32,7 +32,7 @@ namespace FuelTrackerApi.Data
 
             newVehicle.AddTransaction(new FuelTransaction
             {
-                TransactionId = 1,
+                Id = 1,
                 VehicleId = 1,
                 Vehicle = newVehicle,
                 Store = "Murphy USA",
@@ -47,7 +47,7 @@ namespace FuelTrackerApi.Data
 
             newVehicle.AddTransaction(new FuelTransaction
             {
-                TransactionId = 2,
+                Id = 2,
                 VehicleId = 1,
                 Vehicle = newVehicle,
                 Store = "Murphy USA",
@@ -61,7 +61,7 @@ namespace FuelTrackerApi.Data
             });
             newVehicle.AddTransaction(new FuelTransaction
             {
-                TransactionId = 3,
+                Id = 3,
                 VehicleId = 1,
                 Vehicle = newVehicle,
                 Store = "Murphy USA",
@@ -106,7 +106,7 @@ namespace FuelTrackerApi.Data
 
         public FuelTransaction GetFuelTransactionById(int id)
         {
-            return _fuelTransactions.FirstOrDefault(v => v.TransactionId == id);
+            return _fuelTransactions.FirstOrDefault(v => v.Id == id);
         }
 
         public void UpdateFuelTransaction(int id, FuelTransaction FuelTransaction)

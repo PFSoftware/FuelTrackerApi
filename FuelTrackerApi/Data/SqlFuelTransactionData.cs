@@ -37,7 +37,7 @@ namespace FuelTrackerApi.Data
 
         public FuelTransaction GetFuelTransactionById(int id)
         {
-            return _vehicleContext.FuelTransactions.FirstOrDefault(v => v.TransactionId == id);
+            return _vehicleContext.FuelTransactions.FirstOrDefault(v => v.Id == id);
         }
 
         public void UpdateFuelTransaction(int id, FuelTransaction FuelTransaction)
