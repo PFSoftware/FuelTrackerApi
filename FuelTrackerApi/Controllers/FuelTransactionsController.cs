@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FuelTrackerApi.Data;
+using FuelTrackerApi.Models.Api.Requests;
 using FuelTrackerApi.Models.Domain;
 using FuelTrackerApi.Models.ViewModels;
 using FuelTrackerApi.Services;
@@ -45,14 +46,14 @@ namespace FuelTrackerApi.Controllers
 
         //POST api/fueltransactions
         [HttpPost]
-        public ActionResult<FuelTransactionViewModel> CreateFuelTransaction(FuelTransactionViewModel fuelTransaction)
+        public ActionResult<FuelTransactionViewModel> CreateFuelTransaction(CreateEditFuelTransactionRequest request)
         {
-            FuelTransaction fuelTransactionModel = _mapper.Map<FuelTransaction>(fuelTransaction);
-            _service.CreateFuelTransaction(fuelTransactionModel);
+            FuelTransaction newFuelTransaction = _mapper.Map<FuelTransaction>(request);
+            _service.CreateFuelTransaction(newFuelTransaction);
 
-            var FuelTransactionViewModel = _mapper.Map<FuelTransactionViewModel>(fuelTransactionModel);
+            var fuelTransactionViewModel = _mapper.Map<FuelTransactionViewModel>(newFuelTransaction);
 
-            return CreatedAtRoute(nameof(GetFuelTransactionById), new { Id = FuelTransactionViewModel.Id }, FuelTransactionViewModel);
+            return CreatedAtRoute(nameof(GetFuelTransactionById), new { Id = fuelTransactionViewModel.Id }, fuelTransactionViewModel);
         }
 
         //PUT api/fueltransactions/{id}
