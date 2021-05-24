@@ -15,12 +15,10 @@ namespace FuelTrackerApi.Models.Domain
 
         /// <summary>Vehicle ID</summary>
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int VehicleId { get; set; }
 
         /// <summary>Vehicle associated with the fuel transaction.</summary>
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Vehicle Vehicle { get; set; }
 
         /// <summary>Store where fuel was purchased.</summary>

@@ -30,8 +30,8 @@ namespace FuelTrackerApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<VehicleContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
-            services.AddScoped<IVehicleData, SqlVehicleData>();
-            services.AddScoped<IFuelTransactionData, SqlFuelTransactionData>();
+            services.AddScoped<IVehicleData, MockVehicleData>();
+            services.AddScoped<IFuelTransactionData, MockFuelTransactionData>();
             services.AddMvc().AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;

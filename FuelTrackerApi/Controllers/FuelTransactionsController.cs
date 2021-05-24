@@ -44,7 +44,7 @@ namespace FuelTrackerApi.Controllers
 
         //POST api/fueltransactions
         [HttpPost]
-        public ActionResult<FuelTransactionViewModel> CreateFuelTransaction(FuelTransaction fuelTransaction)
+        public ActionResult<FuelTransactionViewModel> CreateFuelTransaction(FuelTransactionViewModel fuelTransaction)
         {
             FuelTransaction fuelTransactionModel = _mapper.Map<FuelTransaction>(fuelTransaction);
             _repository.CreateFuelTransaction(fuelTransactionModel);
