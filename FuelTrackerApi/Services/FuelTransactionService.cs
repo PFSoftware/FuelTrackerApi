@@ -22,6 +22,13 @@ namespace FuelTrackerApi.Services
             if (fuelTransaction is null)
                 throw new ArgumentNullException(nameof(fuelTransaction));
 
+            bool vehicleExists = _context.Vehicles.Where(x => x.Id == fuelTransaction.VehicleId).Any();
+
+            if(!vehicleExists)
+            {
+                throw new InvalidOperationException("Cannot add transaction, vehicle not found");
+            }
+
             _context.FuelTransactions.Add(fuelTransaction);
 
             _context.SaveChanges();

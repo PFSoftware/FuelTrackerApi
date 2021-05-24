@@ -48,6 +48,7 @@ namespace FuelTrackerApi
                 //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FuelTrackerApi v1"));
             }
 
+            // Hack to seed a DB on startup
             using (IServiceScope serviceScope = app.ApplicationServices.CreateScope())
             {
                 AppDbContext context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();

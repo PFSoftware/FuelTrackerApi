@@ -72,7 +72,7 @@ namespace FuelTrackerApi.Data
             });
 
             _context.Vehicles.Add(newVehicle);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
 
