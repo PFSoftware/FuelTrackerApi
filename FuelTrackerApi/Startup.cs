@@ -30,7 +30,7 @@ namespace FuelTrackerApi
             //});
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlite("DataSource=DevDatabase.db"));
 
             services.AddScoped<FuelTransactionService>();
             services.AddScoped<VehicleService>();
