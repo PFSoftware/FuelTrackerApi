@@ -23,6 +23,8 @@ namespace FuelTrackerApi.Services
                 throw new ArgumentNullException(nameof(fuelTransaction));
 
             _context.FuelTransactions.Add(fuelTransaction);
+
+            _context.SaveChanges();
         }
 
         public void DeleteFuelTransaction(FuelTransaction fuelTransaction)
@@ -31,6 +33,8 @@ namespace FuelTrackerApi.Services
                 throw new ArgumentNullException(nameof(fuelTransaction));
 
             _context.FuelTransactions.Remove(fuelTransaction);
+
+            _context.SaveChanges();
         }
 
         public IEnumerable<FuelTransaction> GetAllFuelTransactions()

@@ -2,6 +2,7 @@
 using FuelTrackerApi.Data;
 using FuelTrackerApi.Models.Domain;
 using FuelTrackerApi.Models.ViewModels;
+using FuelTrackerApi.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace FuelTrackerApi.Controllers
     [ApiController]
     public class VehiclesController : ControllerBase
     {
-        private readonly IVehicleData _repository;
+        private readonly VehicleService _service;
         private readonly IMapper _mapper;
 
-        public VehiclesController(IVehicleData repository, IMapper mapper)
+        public VehiclesController(VehicleService service, IMapper mapper)
         {
-            _repository = repository;
+            _service = service;
             _mapper = mapper;
         }
 
@@ -25,7 +26,7 @@ namespace FuelTrackerApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<VehicleViewModel>> GetAllCommmands()
         {
-            IEnumerable<Vehicle> vehicleItems = _repository.GetAllVehicles();
+            IEnumerable<Vehicle> vehicleItems = _service.GetAllVehicles();
 
             return Ok(_mapper.Map<IEnumerable<VehicleViewModel>>(vehicleItems));
         }
@@ -34,7 +35,7 @@ namespace FuelTrackerApi.Controllers
         [HttpGet("{id}", Name = "GetVehicleById")]
         public ActionResult<VehicleViewModel> GetVehicleById(int id)
         {
-            Vehicle VehicleItem = _repository.GetVehicleById(id);
+            Vehicle VehicleItem = _service.GetVehicleById(id);
             if (VehicleItem != null)
             {
                 return Ok(_mapper.Map<VehicleViewModel>(VehicleItem));
@@ -47,8 +48,7 @@ namespace FuelTrackerApi.Controllers
         public ActionResult<VehicleViewModel> CreateVehicle(Vehicle vehicle)
         {
             Vehicle vehicleModel = _mapper.Map<Vehicle>(vehicle);
-            _repository.CreateVehicle(vehicleModel);
-            _repository.SaveChanges();
+            _service.CreateVehicle(vehicleModel);
 
             var VehicleViewModel = _mapper.Map<VehicleViewModel>(vehicleModel);
 
@@ -59,16 +59,14 @@ namespace FuelTrackerApi.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateVehicle(int id, Vehicle vehicle)
         {
-            Vehicle vehicleModelFromRepo = _repository.GetVehicleById(id);
+            Vehicle vehicleModelFromRepo = _service.GetVehicleById(id);
             if (vehicleModelFromRepo == null)
             {
                 return NotFound();
             }
             _mapper.Map(vehicle, vehicleModelFromRepo);
 
-            _repository.UpdateVehicle(id, vehicleModelFromRepo);
-
-            _repository.SaveChanges();
+            _service.UpdateVehicle(id, vehicleModelFromRepo);
 
             return NoContent();
         }
@@ -77,7 +75,7 @@ namespace FuelTrackerApi.Controllers
         [HttpPatch("{id}")]
         public ActionResult PartialVehicleUpdate(int id, JsonPatchDocument<Vehicle> patchDoc)
         {
-            var vehicleModelFromRepo = _repository.GetVehicleById(id);
+            var vehicleModelFromRepo = _service.GetVehicleById(id);
             if (vehicleModelFromRepo == null)
             {
                 return NotFound();
@@ -93,9 +91,7 @@ namespace FuelTrackerApi.Controllers
 
             _mapper.Map(VehicleToPatch, vehicleModelFromRepo);
 
-            _repository.UpdateVehicle(id, vehicleModelFromRepo);
-
-            _repository.SaveChanges();
+            _service.UpdateVehicle(id, vehicleModelFromRepo);
 
             return NoContent();
         }
@@ -104,13 +100,12 @@ namespace FuelTrackerApi.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteVehicle(int id)
         {
-            var vehicleModelFromRepo = _repository.GetVehicleById(id);
+            var vehicleModelFromRepo = _service.GetVehicleById(id);
             if (vehicleModelFromRepo == null)
             {
                 return NotFound();
             }
-            _repository.DeleteVehicle(vehicleModelFromRepo);
-            _repository.SaveChanges();
+            _service.DeleteVehicle(vehicleModelFromRepo);
 
             return NoContent();
         }

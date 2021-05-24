@@ -14,11 +14,8 @@ namespace FuelTrackerApi.Models.Domain
         //TODO Figure out how to get this to work the way Doug says it should.
 
         /// <summary>Vehicle ID</summary>
-        [Required]
         public int VehicleId { get; set; }
-
         /// <summary>Vehicle associated with the fuel transaction.</summary>
-        [Required]
         public Vehicle Vehicle { get; set; }
 
         /// <summary>Store where fuel was purchased.</summary>
