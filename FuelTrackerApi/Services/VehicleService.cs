@@ -46,7 +46,7 @@ namespace FuelTrackerApi.Services
         {
             return _context
                 .Vehicles
-                .Include(x => x.Transactions.Where(t => t.VehicleId == x.Id))
+                .Include(x => x.Transactions)
                 .FirstOrDefault(v => v.Id == id);
         }
 
