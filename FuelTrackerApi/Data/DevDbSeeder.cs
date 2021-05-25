@@ -1,7 +1,6 @@
 ﻿using FuelTrackerApi.Models.Domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FuelTrackerApi.Data
@@ -10,7 +9,9 @@ namespace FuelTrackerApi.Data
     {
         private AppDbContext _context;
 
-        public DevDbSeeder() { }
+        public DevDbSeeder()
+        {
+        }
 
         public async Task SeedDatabase(AppDbContext context)
         {
@@ -71,10 +72,43 @@ namespace FuelTrackerApi.Data
                 Price = 20.179m
             });
 
+            Vehicle vehicle2 = new Vehicle
+            {
+                Nickname = "CR-V",
+                Make = "Honda",
+                Model = "CR-V",
+                Year = 2017,
+                Transactions = new List<FuelTransaction>()
+            };
+
+            vehicle2.AddTransaction(new FuelTransaction
+            {
+                Vehicle = newVehicle,
+                Store = "Kroger",
+                Date = date,
+                Octane = 87,
+                Range = 157,
+                Distance = 300.7m,
+                Gallons = 30.17m,
+                Odometer = 300.7m,
+                Price = 30.179m
+            });
+            vehicle2.AddTransaction(new FuelTransaction
+            {
+                Vehicle = newVehicle,
+                Store = "Shell",
+                Date = date,
+                Octane = 87,
+                Range = 92,
+                Distance = 400.7m,
+                Gallons = 40.17m,
+                Odometer = 400.7m,
+                Price = 40.179m
+            });
             _context.Vehicles.Add(newVehicle);
+            _context.Vehicles.Add(vehicle2);
+
             await _context.SaveChangesAsync();
         }
-
-
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FuelTrackerApi.Services
 {
@@ -24,7 +23,7 @@ namespace FuelTrackerApi.Services
 
             bool vehicleExists = _context.Vehicles.Where(x => x.Id == fuelTransaction.VehicleId).Any();
 
-            if(!vehicleExists)
+            if (!vehicleExists)
             {
                 throw new InvalidOperationException("Cannot add transaction, vehicle not found");
             }

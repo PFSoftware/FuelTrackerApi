@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FuelTrackerApi.Data;
 using FuelTrackerApi.Models.Domain;
 using FuelTrackerApi.Models.ViewModels;
 using FuelTrackerApi.Services;

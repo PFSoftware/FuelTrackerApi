@@ -1,9 +1,9 @@
 ﻿using FuelTrackerApi.Data;
 using FuelTrackerApi.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FuelTrackerApi.Services
 {
@@ -36,18 +36,23 @@ namespace FuelTrackerApi.Services
 
         public IEnumerable<Vehicle> GetAllVehicles()
         {
-            return _context.Vehicles.ToList();
+            return _context
+                .Vehicles
+                .Include(x => x.Transactions)
+                .ToList();
         }
 
         public Vehicle GetVehicleById(int id)
         {
-            return _context.Vehicles.FirstOrDefault(v => v.Id == id);
+            return _context
+                .Vehicles
+                .Include(x => x.Transactions.Where(t => t.VehicleId == x.Id))
+                .FirstOrDefault(v => v.Id == id);
         }
 
         public void UpdateVehicle(int id, Vehicle vehicle)
         {
-            //Nothing 
+            //Nothing
         }
-
     }
 }

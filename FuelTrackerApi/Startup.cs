@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using System;
-using System.Text.Json.Serialization;
 
 namespace FuelTrackerApi
 {
@@ -31,7 +31,7 @@ namespace FuelTrackerApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlite("DataSource=DevDatabase.db"));
-
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddScoped<FuelTransactionService>();
             services.AddScoped<VehicleService>();
 
