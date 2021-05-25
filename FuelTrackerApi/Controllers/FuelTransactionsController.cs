@@ -25,7 +25,7 @@ namespace FuelTrackerApi.Controllers
 
         //GET api/fueltransactions
         [HttpGet]
-        public ActionResult<IEnumerable<FuelTransactionViewModel>> GetAllCommmands()
+        public ActionResult<IEnumerable<FuelTransactionViewModel>> GetAllFuelTransactions()
         {
             IEnumerable<FuelTransaction> fuelTransactionItems = _service.GetAllFuelTransactions();
 
