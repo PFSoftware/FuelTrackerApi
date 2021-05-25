@@ -9,16 +9,13 @@ namespace FuelTrackerApi.Models.Domain
     {
         /// <summary>Transaction ID</summary>
         [Key]
-        public int TransactionId { get; set; }
+        public int Id { get; set; }
 
         //TODO Figure out how to get this to work the way Doug says it should.
 
         /// <summary>Vehicle ID</summary>
-        [Required]
         public int VehicleId { get; set; }
-
         /// <summary>Vehicle associated with the fuel transaction.</summary>
-        [Required]
         public Vehicle Vehicle { get; set; }
 
         /// <summary>Store where fuel was purchased.</summary>
@@ -59,7 +56,7 @@ namespace FuelTrackerApi.Models.Domain
         {
             if (left is null && right is null) return true;
             if (left is null ^ right is null) return false;
-            return DateTime.Equals(left.Date, right.Date) && string.Equals(left.Store, right.Store, StringComparison.OrdinalIgnoreCase) && left.TransactionId == right.TransactionId && left.VehicleId == right.VehicleId && left.Odometer == right.Odometer && left.Range == right.Range && left.Distance == right.Distance && left.Gallons == right.Gallons && left.Odometer == right.Odometer && left.Price == right.Price;
+            return DateTime.Equals(left.Date, right.Date) && string.Equals(left.Store, right.Store, StringComparison.OrdinalIgnoreCase) && left.Id == right.Id && left.VehicleId == right.VehicleId && left.Odometer == right.Odometer && left.Range == right.Range && left.Distance == right.Distance && left.Gallons == right.Gallons && left.Odometer == right.Odometer && left.Price == right.Price;
         }
 
         public override bool Equals(object obj) => Equals(this, obj as FuelTransaction);

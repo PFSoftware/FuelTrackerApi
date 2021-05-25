@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FuelTrackerApi.Models.Api.Requests;
 using FuelTrackerApi.Models.Domain;
 using FuelTrackerApi.Models.ViewModels;
 
@@ -9,10 +10,9 @@ namespace FuelTrackerApi.Profiles
         public VehiclesProfile()
         {
             //Source -> Target
-            CreateMap<Vehicle, VehicleViewModel>();
-            CreateMap<VehicleViewModel, Vehicle>();
-            CreateMap<FuelTransaction, FuelTransactionViewModel>();
-            CreateMap<FuelTransactionViewModel, FuelTransaction>();
+            CreateMap<Vehicle, VehicleViewModel>().ReverseMap();
+            CreateMap<FuelTransaction, FuelTransactionViewModel>().ReverseMap();
+            CreateMap<FuelTransaction, CreateEditFuelTransactionRequest>().ReverseMap();
         }
     }
 }

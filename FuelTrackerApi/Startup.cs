@@ -1,4 +1,5 @@
 using FuelTrackerApi.Data;
+using FuelTrackerApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,9 +30,12 @@ namespace FuelTrackerApi
             //});
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddDbContext<VehicleContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
-            services.AddScoped<IVehicleData, SqlVehicleData>();
-            services.AddScoped<IFuelTransactionData, SqlFuelTransactionData>();
+            services.AddDbContext<AppDbContext>(options => options.UseSqlite("DataSource=DevDatabase.db"));
+
+            services.AddScoped<FuelTransactionService>();
+            services.AddScoped<VehicleService>();
+
+            services.AddScoped<DevDbSeeder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +46,17 @@ namespace FuelTrackerApi
                 app.UseDeveloperExceptionPage();
                 //app.UseSwagger();
                 //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FuelTrackerApi v1"));
+            }
+
+            // Hack to seed a DB on startup
+            using (IServiceScope serviceScope = app.ApplicationServices.CreateScope())
+            {
+                AppDbContext context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+                DevDbSeeder seeder = serviceScope.ServiceProvider.GetRequiredService<DevDbSeeder>();
+
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                seeder.SeedDatabase(context).GetAwaiter().GetResult();
             }
 
             app.UseHttpsRedirection();

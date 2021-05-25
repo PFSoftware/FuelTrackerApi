@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using FuelTrackerApi.Data;
+using FuelTrackerApi.Models.Api.Requests;
 using FuelTrackerApi.Models.Domain;
 using FuelTrackerApi.Models.ViewModels;
+using FuelTrackerApi.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,12 +14,12 @@ namespace FuelTrackerApi.Controllers
     [ApiController]
     public class FuelTransactionsController : ControllerBase
     {
-        private readonly IFuelTransactionData _repository;
+        private readonly FuelTransactionService _service;
         private readonly IMapper _mapper;
 
-        public FuelTransactionsController(IFuelTransactionData repository, IMapper mapper)
+        public FuelTransactionsController(FuelTransactionService service, IMapper mapper)
         {
-            _repository = repository;
+            _service = service;
             _mapper = mapper;
         }
 
@@ -25,7 +27,7 @@ namespace FuelTrackerApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<FuelTransactionViewModel>> GetAllCommmands()
         {
-            IEnumerable<FuelTransaction> fuelTransactionItems = _repository.GetAllFuelTransactions();
+            IEnumerable<FuelTransaction> fuelTransactionItems = _service.GetAllFuelTransactions();
 
             return Ok(_mapper.Map<IEnumerable<FuelTransactionViewModel>>(fuelTransactionItems));
         }
@@ -34,7 +36,7 @@ namespace FuelTrackerApi.Controllers
         [HttpGet("{id}", Name = "GetFuelTransactionById")]
         public ActionResult<FuelTransactionViewModel> GetFuelTransactionById(int id)
         {
-            FuelTransaction fuelTransactionItem = _repository.GetFuelTransactionById(id);
+            FuelTransaction fuelTransactionItem = _service.GetFuelTransactionById(id);
             if (fuelTransactionItem != null)
             {
                 return Ok(_mapper.Map<FuelTransactionViewModel>(fuelTransactionItem));
@@ -44,31 +46,28 @@ namespace FuelTrackerApi.Controllers
 
         //POST api/fueltransactions
         [HttpPost]
-        public ActionResult<FuelTransactionViewModel> CreateFuelTransaction(FuelTransactionViewModel fuelTransaction)
+        public ActionResult<FuelTransactionViewModel> CreateFuelTransaction(CreateEditFuelTransactionRequest request)
         {
-            FuelTransaction fuelTransactionModel = _mapper.Map<FuelTransaction>(fuelTransaction);
-            _repository.CreateFuelTransaction(fuelTransactionModel);
-            _repository.SaveChanges();
+            FuelTransaction newFuelTransaction = _mapper.Map<FuelTransaction>(request);
+            _service.CreateFuelTransaction(newFuelTransaction);
 
-            var FuelTransactionViewModel = _mapper.Map<FuelTransactionViewModel>(fuelTransactionModel);
+            var fuelTransactionViewModel = _mapper.Map<FuelTransactionViewModel>(newFuelTransaction);
 
-            return CreatedAtRoute(nameof(GetFuelTransactionById), new { Id = FuelTransactionViewModel.TransactionId }, FuelTransactionViewModel);
+            return CreatedAtRoute(nameof(GetFuelTransactionById), new { Id = fuelTransactionViewModel.Id }, fuelTransactionViewModel);
         }
 
         //PUT api/fueltransactions/{id}
         [HttpPut("{id}")]
         public ActionResult UpdateFuelTransaction(int id, FuelTransaction fuelTransaction)
         {
-            FuelTransaction fuelTransactionModelFromRepo = _repository.GetFuelTransactionById(id);
+            FuelTransaction fuelTransactionModelFromRepo = _service.GetFuelTransactionById(id);
             if (fuelTransactionModelFromRepo == null)
             {
                 return NotFound();
             }
             _mapper.Map(fuelTransaction, fuelTransactionModelFromRepo);
 
-            _repository.UpdateFuelTransaction(id, fuelTransactionModelFromRepo);
-
-            _repository.SaveChanges();
+            _service.UpdateFuelTransaction(id, fuelTransactionModelFromRepo);
 
             return NoContent();
         }
@@ -77,7 +76,7 @@ namespace FuelTrackerApi.Controllers
         [HttpPatch("{id}")]
         public ActionResult PartialFuelTransactionUpdate(int id, JsonPatchDocument<FuelTransaction> patchDoc)
         {
-            FuelTransaction fuelTransactionModelFromRepo = _repository.GetFuelTransactionById(id);
+            FuelTransaction fuelTransactionModelFromRepo = _service.GetFuelTransactionById(id);
             if (fuelTransactionModelFromRepo == null)
             {
                 return NotFound();
@@ -93,9 +92,7 @@ namespace FuelTrackerApi.Controllers
 
             _mapper.Map(fuelTransactionToPatch, fuelTransactionModelFromRepo);
 
-            _repository.UpdateFuelTransaction(id, fuelTransactionModelFromRepo);
-
-            _repository.SaveChanges();
+            _service.UpdateFuelTransaction(id, fuelTransactionModelFromRepo);
 
             return NoContent();
         }
@@ -104,14 +101,12 @@ namespace FuelTrackerApi.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteFuelTransaction(int id)
         {
-            FuelTransaction fuelTransactionModelFromRepo = _repository.GetFuelTransactionById(id);
+            FuelTransaction fuelTransactionModelFromRepo = _service.GetFuelTransactionById(id);
             if (fuelTransactionModelFromRepo == null)
             {
                 return NotFound();
             }
-            _repository.DeleteFuelTransaction(fuelTransactionModelFromRepo);
-            _repository.SaveChanges();
-
+            _service.DeleteFuelTransaction(fuelTransactionModelFromRepo);
             return NoContent();
         }
     }
