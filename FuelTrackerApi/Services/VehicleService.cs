@@ -1,4 +1,5 @@
 ﻿using FuelTrackerApi.Data;
+using FuelTrackerApi.Models.Api.Requests;
 using FuelTrackerApi.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -50,9 +51,19 @@ namespace FuelTrackerApi.Services
                 .FirstOrDefault(v => v.Id == id);
         }
 
-        public void UpdateVehicle(int id, Vehicle vehicle)
+        public void UpdateVehicle(CreateEditVehicleRequest request, Vehicle vehicle)
         {
-            //Nothing
+            if (!string.IsNullOrWhiteSpace(request.Nickname))
+                vehicle.Nickname = request.Nickname;
+            if (!string.IsNullOrWhiteSpace(request.Make))
+                vehicle.Make = request.Make;
+            if (!string.IsNullOrWhiteSpace(request.Model))
+                vehicle.Model = request.Model;
+            if (request.Year != 0)
+                vehicle.Year = request.Year;
+            if (request.Transactions != null && request.Transactions.Count != 0)
+                vehicle.Transactions = new List<FuelTransaction>(request.Transactions);
+            _context.SaveChanges();
         }
     }
 }

@@ -3,7 +3,6 @@ using FuelTrackerApi.Models.Api.Requests;
 using FuelTrackerApi.Models.Domain;
 using FuelTrackerApi.Models.ViewModels;
 using FuelTrackerApi.Services;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -37,9 +36,8 @@ namespace FuelTrackerApi.Controllers
         {
             FuelTransaction fuelTransactionItem = _service.GetFuelTransactionById(id);
             if (fuelTransactionItem != null)
-            {
                 return Ok(_mapper.Map<FuelTransactionViewModel>(fuelTransactionItem));
-            }
+
             return NotFound();
         }
 
@@ -55,44 +53,18 @@ namespace FuelTrackerApi.Controllers
             return CreatedAtRoute(nameof(GetFuelTransactionById), new { Id = fuelTransactionViewModel.Id }, fuelTransactionViewModel);
         }
 
-        //PUT api/fueltransactions/{id}
-        [HttpPut("{id}")]
-        public ActionResult UpdateFuelTransaction(int id, FuelTransaction fuelTransaction)
+        //POST api/fueltransactions/{id}
+        [HttpPost("{id}")]
+        public ActionResult UpdateFuelTransaction(int id, CreateEditFuelTransactionRequest request)
         {
-            FuelTransaction fuelTransactionModelFromRepo = _service.GetFuelTransactionById(id);
-            if (fuelTransactionModelFromRepo == null)
-            {
+            FuelTransaction fuelTransaction = _service.GetFuelTransactionById(id);
+            if (fuelTransaction == null)
                 return NotFound();
-            }
-            _mapper.Map(fuelTransaction, fuelTransactionModelFromRepo);
 
-            _service.UpdateFuelTransaction(id, fuelTransactionModelFromRepo);
+            if (request.Id != null && request.Id != id)
+                return ValidationProblem("The ID in the model doesn't match the ID the request was made on.");
 
-            return NoContent();
-        }
-
-        //PATCH api/fueltransactions/{id}
-        [HttpPatch("{id}")]
-        public ActionResult PartialFuelTransactionUpdate(int id, JsonPatchDocument<FuelTransaction> patchDoc)
-        {
-            FuelTransaction fuelTransactionModelFromRepo = _service.GetFuelTransactionById(id);
-            if (fuelTransactionModelFromRepo == null)
-            {
-                return NotFound();
-            }
-
-            FuelTransaction fuelTransactionToPatch = _mapper.Map<FuelTransaction>(fuelTransactionModelFromRepo);
-            patchDoc.ApplyTo(fuelTransactionToPatch, ModelState);
-
-            if (!TryValidateModel(fuelTransactionToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _mapper.Map(fuelTransactionToPatch, fuelTransactionModelFromRepo);
-
-            _service.UpdateFuelTransaction(id, fuelTransactionModelFromRepo);
-
+            _service.UpdateFuelTransaction(request, fuelTransaction);
             return NoContent();
         }
 
@@ -100,12 +72,11 @@ namespace FuelTrackerApi.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteFuelTransaction(int id)
         {
-            FuelTransaction fuelTransactionModelFromRepo = _service.GetFuelTransactionById(id);
-            if (fuelTransactionModelFromRepo == null)
-            {
+            FuelTransaction fuelTransaction = _service.GetFuelTransactionById(id);
+            if (fuelTransaction == null)
                 return NotFound();
-            }
-            _service.DeleteFuelTransaction(fuelTransactionModelFromRepo);
+
+            _service.DeleteFuelTransaction(fuelTransaction);
             return NoContent();
         }
     }

@@ -39,7 +39,7 @@ namespace FuelTrackerApi.Models.ViewModels
         public decimal Price { get; set; }
 
         /// <summary>Date fuel was purchased, formatted.</summary>
-        public string DateToString => Date.ToString("yyyy/MM/dd");
+        public string DateToString => Date.ToString("yyyy-MM-dd");
 
         /// <summary>Distance travelled, formatted.</summary>
         public string DistanceToString => Distance.ToString("N1");

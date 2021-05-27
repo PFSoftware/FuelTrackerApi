@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using FuelTrackerApi.Models.Api.Requests;
 using FuelTrackerApi.Models.Domain;
 using FuelTrackerApi.Models.ViewModels;
 using FuelTrackerApi.Services;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -21,7 +21,7 @@ namespace FuelTrackerApi.Controllers
             _mapper = mapper;
         }
 
-        //GET api/Vehicles
+        //GET api/vehicles
         [HttpGet]
         public ActionResult<IEnumerable<VehicleViewModel>> GetAllVehicles()
         {
@@ -30,81 +30,53 @@ namespace FuelTrackerApi.Controllers
             return Ok(_mapper.Map<IEnumerable<VehicleViewModel>>(vehicleItems));
         }
 
-        //GET api/Vehicles/{id}
+        //GET api/vehicles/{id}
         [HttpGet("{id}", Name = "GetVehicleById")]
         public ActionResult<VehicleViewModel> GetVehicleById(int id)
         {
             Vehicle VehicleItem = _service.GetVehicleById(id);
             if (VehicleItem != null)
-            {
                 return Ok(_mapper.Map<VehicleViewModel>(VehicleItem));
-            }
+
             return NotFound();
         }
 
-        //POST api/Vehicles
+        //POST api/vehicles
         [HttpPost]
-        public ActionResult<VehicleViewModel> CreateVehicle(Vehicle vehicle)
+        public ActionResult<VehicleViewModel> CreateVehicle(CreateEditVehicleRequest request)
         {
-            Vehicle vehicleModel = _mapper.Map<Vehicle>(vehicle);
-            _service.CreateVehicle(vehicleModel);
+            Vehicle newVehicle = _mapper.Map<Vehicle>(request);
+            _service.CreateVehicle(newVehicle);
 
-            var VehicleViewModel = _mapper.Map<VehicleViewModel>(vehicleModel);
+            var vehicleViewModel = _mapper.Map<VehicleViewModel>(newVehicle);
 
-            return CreatedAtRoute(nameof(GetVehicleById), new { Id = VehicleViewModel.Id }, VehicleViewModel);
+            return CreatedAtRoute(nameof(GetVehicleById), new { Id = vehicleViewModel.Id }, vehicleViewModel);
         }
 
-        //PUT api/Vehicles/{id}
-        [HttpPut("{id}")]
-        public ActionResult UpdateVehicle(int id, Vehicle vehicle)
+        //POST api/vehicles/{id}
+        [HttpPost("{id}")]
+        public ActionResult UpdateVehicle(int id, CreateEditVehicleRequest request)
         {
-            Vehicle vehicleModelFromRepo = _service.GetVehicleById(id);
-            if (vehicleModelFromRepo == null)
-            {
+            Vehicle vehicle = _service.GetVehicleById(id);
+            if (vehicle == null)
                 return NotFound();
-            }
-            _mapper.Map(vehicle, vehicleModelFromRepo);
 
-            _service.UpdateVehicle(id, vehicleModelFromRepo);
+            if (request.Id != null && request.Id != id)
+                return ValidationProblem("The ID in the model doesn't match the ID the request was made on.");
 
+            _service.UpdateVehicle(request, vehicle);
             return NoContent();
         }
 
-        //PATCH api/Vehicles/{id}
-        [HttpPatch("{id}")]
-        public ActionResult PartialVehicleUpdate(int id, JsonPatchDocument<Vehicle> patchDoc)
-        {
-            var vehicleModelFromRepo = _service.GetVehicleById(id);
-            if (vehicleModelFromRepo == null)
-            {
-                return NotFound();
-            }
-
-            var VehicleToPatch = _mapper.Map<Vehicle>(vehicleModelFromRepo);
-            patchDoc.ApplyTo(VehicleToPatch, ModelState);
-
-            if (!TryValidateModel(VehicleToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _mapper.Map(VehicleToPatch, vehicleModelFromRepo);
-
-            _service.UpdateVehicle(id, vehicleModelFromRepo);
-
-            return NoContent();
-        }
-
-        //DELETE api/Vehicles/{id}
+        //DELETE api/vehicles/{id}
         [HttpDelete("{id}")]
         public ActionResult DeleteVehicle(int id)
         {
-            var vehicleModelFromRepo = _service.GetVehicleById(id);
-            if (vehicleModelFromRepo == null)
-            {
+            var vehicle = _service.GetVehicleById(id);
+            if (vehicle == null)
                 return NotFound();
-            }
-            _service.DeleteVehicle(vehicleModelFromRepo);
+
+            _service.DeleteVehicle(vehicle);
 
             return NoContent();
         }
